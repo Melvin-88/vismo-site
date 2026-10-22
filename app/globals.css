@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Vismo design tokens (resources/tokens.css 1:1) */
+:root {
+  --graphite: #1E1F22;
+  --graphite-2: #26272B;
+  --graphite-3: #2E3035;
+  --white: #FFFFFF;
+  --off-white: #F5F5F3;
+  --lime: #C6F432;
+  --lime-on-light: #9CCB0E; /* тільки декор на світлому, НЕ для тексту (1.9:1) */
+  --gray: #A1A4AB;
+  --gray-on-light: #6B6E75;
+  --error: #FF6B6B;
+  --lime-rgb: 198 244 50;
+  --gray-rgb: 161 164 171;
+
+  --radius-card: 24px;
+  --radius-card-sm: 20px;
+  --radius-field: 14px;
+  --radius-pill: 9999px;
+
+  --section-y-mobile: 72px;
+  --section-y-desktop: 120px;
+
+  --shadow-light: 0 1px 2px rgba(30,31,34,.06), 0 8px 24px rgba(30,31,34,.06);
+}
+
+/* якорі зупиняються під липкою шапкою (64 / 76 px) + повітря */
+html { scroll-padding-top: 80px; }
+@media (min-width: 1024px) { html { scroll-padding-top: 100px; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+/* відео-постер (LCP) не ховаємо: він малюється одразу, анімуються тільки текст і калькулятор */
+/* запобіжник: якщо GSAP не встиг за 2,5 с (повільна мережа), hero показується сам; Motion тоді пропускає інтро */
+.anim #hero > div > div:first-child > :not(:last-child), .anim #calc { visibility: hidden; animation: hero-reveal 0s 2.5s forwards; }
+@keyframes hero-reveal { to { visibility: visible; } }
+body { background: var(--graphite); color: var(--white); -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+       -webkit-user-select: none; user-select: none; cursor: default; }
+/* поля форм лишаються виділюваними, інакше не відредагувати введене */
+input, textarea { -webkit-user-select: text; user-select: text; cursor: text; }
+a, button, label, summary, input[type="checkbox"], input[type="range"] { cursor: pointer; }
+img, svg, video { -webkit-user-drag: none; }
+
+/* у шарі components, щоб утиліти (hidden, grid, lg:inline-flex) їх перебивали */
+@layer components {
+.container-x { max-width: 1200px; margin-inline: auto; padding-inline: 20px; }
+@media (min-width: 1024px) { .container-x { padding-inline: 24px; } }
+.section-y { padding-block: var(--section-y-mobile); }
+@media (min-width: 1024px) { .section-y { padding-block: var(--section-y-desktop); } }
+
+.icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 9999px; font-weight: 700; white-space: nowrap; font-size: 17px; transition: background-color .2s, color .2s, border-color .2s; }
+.btn-primary { background: var(--lime); color: var(--graphite); }
+.btn-primary:hover { background: #D4FA5C; }
+.btn-primary:disabled { opacity: .6; cursor: wait; }
+.btn-secondary { border: 2px solid var(--graphite-3); color: var(--white); }
+.btn-secondary:hover { border-color: var(--gray); }
+.btn:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+#form a:focus-visible, #form button:focus-visible { outline-color: var(--graphite); }
+
+.field { width: 100%; min-height: 52px; padding: 14px 16px; border-radius: var(--radius-field); background: var(--off-white); border: 1.5px solid #E2E2DE; color: var(--graphite); font-size: 16px; }
+.field::placeholder { color: #8A8D93; }
+.field:focus { outline: none; border: 2px solid var(--graphite); }
+.field[aria-invalid="true"] { border-color: #C62828; }
+.field-dark { background: var(--graphite-3); border-color: transparent; color: var(--white); min-height: 48px; }
+.field-dark::placeholder { color: #8A8D93; }
+.field-dark:focus { border: 2px solid var(--lime); }
+.field-dark[aria-invalid="true"] { border-color: var(--error); }
+
+.range { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; }
+.range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, var(--lime) var(--p, 50%), var(--graphite-3) var(--p, 50%)); }
+.range::-moz-range-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, var(--lime) var(--p, 50%), var(--graphite-3) var(--p, 50%)); }
+.range::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; margin-top: -9px; border-radius: 9999px; background: var(--white); border: 5px solid var(--lime); }
+.range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 9999px; background: var(--white); border: 5px solid var(--lime); }
+
+details summary::-webkit-details-marker { display: none; }
+details summary { list-style: none; }
+details[open] .faq-plus { transform: rotate(45deg); background: var(--lime); color: var(--graphite); }
+.faq-plus { transition: transform .25s, background-color .25s; }
+.dot { display: inline-block; border-radius: 9999px; flex: none; }
+
+/* Чекбокс згоди: власний, бо нативний у різних браузерах різного розміру й зсувається по висоті.
+   margin-top = (line-height 1.45 × 15px − 20px) / 2 → квадрат по центру першого рядка тексту */
+.check { -webkit-appearance: none; appearance: none; flex: none; width: 20px; height: 20px; margin-top: .9px; border-radius: 6px;
+         border: 1.5px solid #B9BBB6; background: #fff center / 14px no-repeat; transition: background-color .15s, border-color .15s; }
+.check:checked { background-color: var(--graphite); border-color: var(--graphite);
+                 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E"); }
+.check-dark { margin-top: 0; border-color: #4A4C52; background-color: var(--graphite-3); }
+.check-dark:checked { background-color: var(--lime); border-color: var(--lime);
+                      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E1F22' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E"); }
+.check:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+.check[aria-invalid="true"] { border-color: #C62828; }
+.check-dark[aria-invalid="true"] { border-color: var(--error); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}

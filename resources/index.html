@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vismo — реклама в Google та Instagram для бізнесу</title>
+<meta name="description" content="Налаштовуємо Google Ads, рекламу в Instagram і Facebook, сайти, аналітику та Google Карти, щоб ви бачили, скільки коштує кожна заявка. Безкоштовний розбір.">
+<link rel="icon" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&subset=cyrillic&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<script>if (!location.search.includes('static') && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('anim')</script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  // Tailwind theme = tokens.css (той самий набір, щоб розробка взяла 1:1)
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          graphite: 'var(--graphite)', 'graphite-2': 'var(--graphite-2)', 'graphite-3': 'var(--graphite-3)',
+          lime: 'rgb(var(--lime-rgb) / <alpha-value>)', 'lime-on-light': 'var(--lime-on-light)', 'off-white': 'var(--off-white)',
+          gray: 'rgb(var(--gray-rgb) / <alpha-value>)', 'gray-on-light': 'var(--gray-on-light)', error: 'var(--error)',
+        },
+        fontFamily: { sans: ['Nunito', 'system-ui', 'sans-serif'] },
+        borderRadius: { card: 'var(--radius-card)', field: 'var(--radius-field)' },
+        maxWidth: { container: '1200px', prose: '65ch' },
+      },
+    },
+  }
+</script>
+<style>
+  /* якорі зупиняються під липкою шапкою (64 / 76 px) + повітря */
+  html { scroll-padding-top: 80px; }
+  @media (min-width: 1024px) { html { scroll-padding-top: 100px; } }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  body { background: var(--graphite); color: var(--white); font-family: var(--font-sans); -webkit-font-smoothing: antialiased;
+         -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+  /* поля форм мають лишатися виділюваними, інакше не відредагувати введене */
+  input, textarea { -webkit-user-select: text; user-select: text; }
+  .container-x { max-width: 1200px; margin-inline: auto; padding-inline: 20px; }
+  @media (min-width: 1024px) { .container-x { padding-inline: 24px; } }
+  .section-y { padding-block: var(--section-y-mobile); }
+  @media (min-width: 1024px) { .section-y { padding-block: var(--section-y-desktop); } }
+  .anim #hero > div > * { visibility: hidden; }
+  .icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 9999px; font-weight: 700; white-space: nowrap; font-size: 17px; transition: background-color .2s, color .2s, border-color .2s, transform .15s; }
+  .btn-primary { background: var(--lime); color: var(--graphite); }
+  .btn-primary:hover { background: #D4FA5C; }
+  .btn-secondary { border: 2px solid var(--graphite-3); color: var(--white); }
+  .btn-secondary:hover { border-color: var(--gray); }
+  .btn:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+  .field { width: 100%; min-height: 52px; padding: 14px 16px; border-radius: var(--radius-field); background: var(--off-white); border: 1.5px solid #E2E2DE; color: var(--graphite); font-size: 16px; }
+  .field::placeholder { color: #9A9DA3; }
+  .field:focus { outline: none; border: 2px solid var(--graphite); }
+  .range { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; }
+  .range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, var(--lime) var(--p, 50%), var(--graphite-3) var(--p, 50%)); }
+  .range::-moz-range-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, var(--lime) var(--p, 50%), var(--graphite-3) var(--p, 50%)); }
+  .range::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; margin-top: -9px; border-radius: 9999px; background: var(--white); border: 5px solid var(--lime); }
+  .range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 9999px; background: var(--white); border: 5px solid var(--lime); }
+  .field-dark { background: var(--graphite-3); border-color: transparent; color: var(--white); min-height: 48px; }
+  .field-dark::placeholder { color: #7D8088; }
+  .field-dark:focus { border: 2px solid var(--lime); }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] .faq-plus { transform: rotate(45deg); background: var(--lime); color: var(--graphite); }
+  .faq-plus { transition: transform .25s, background-color .25s; }
+  .dot { display: inline-block; border-radius: 9999px; flex: none; }
+</style>
+</head>
+<body>
+
+<!-- 0. ШАПКА -->
+<header class="sticky top-0 z-40 border-b border-graphite-3 bg-[rgba(30,31,34,.82)] backdrop-blur-md">
+  <div class="container-x flex h-16 items-center justify-between lg:h-[76px]">
+    <a href="#" aria-label="Vismo Agency — на початок">
+      <img src="assets/vismo-wordmark-white.svg" alt="Vismo" class="h-8 w-auto lg:hidden">
+      <img src="assets/vismo-logo-white.svg" alt="Vismo Agency" class="hidden h-11 w-auto lg:block">
+    </a>
+    <nav class="hidden items-center gap-9 text-[16px] font-semibold text-gray lg:flex" aria-label="Розділи">
+      <a href="#services" class="hover:text-white">Послуги</a>
+      <a href="#process" class="hover:text-white">Як працюємо</a>
+      <a href="#faq" class="hover:text-white">Питання</a>
+    </nav>
+    <a href="#form" class="btn btn-primary !min-h-[44px] !px-5 !text-[16px] lg:hidden">Розбір</a>
+    <a href="#form" class="btn btn-primary !min-h-[48px] hidden lg:inline-flex">Отримати безкоштовний розбір</a>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. ПЕРШИЙ ЕКРАН -->
+<section id="hero" class="relative overflow-hidden">
+  <div class="container-x grid items-start gap-12 pb-16 pt-9 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pb-28 lg:pt-20">
+    <div class="lg:pt-10">
+      <div class="mb-6 flex items-center gap-[6px]" aria-hidden="true">
+        <span class="dot h-[14px] w-[14px] bg-lime"></span><span class="dot h-[9px] w-[9px] bg-lime"></span><span class="dot h-[6px] w-[6px] bg-lime"></span>
+      </div>
+      <h1 class="text-[35px] font-extrabold leading-[1.15] tracking-[-0.01em] lg:text-[58px] lg:leading-[1.08]">
+        Заявки для вашого бізнесу з&nbsp;<span class="text-lime">Google</span> та&nbsp;<span class="text-lime">Instagram</span>
+      </h1>
+      <p class="mt-5 max-w-[34rem] text-[16px] leading-[1.55] text-gray lg:mt-7 lg:text-[19px] lg:leading-[1.6]">
+        Налаштуємо рекламу, аналітику й Google Карти так, щоб ви бачили, звідки приходить кожен клієнт і скільки він коштує.
+      </p>
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-10">
+        <a href="#form" class="btn btn-primary w-full sm:w-auto">Отримати безкоштовний розбір</a>
+        <a href="https://instagram.com/vismo.agency" class="btn btn-secondary w-full sm:w-auto"><svg class="icon !h-5 !w-5" data-i="instagram"></svg>Написати в Instagram</a>
+      </div>
+      <p class="mt-4 text-[14px] text-gray">Відповідаємо протягом робочого дня.</p>
+      <!-- Hero-цикл 8 с (film/film.html → render.py): реклама → повідомлення → заявка → лічильник -->
+      <div class="mt-8 overflow-hidden rounded-card border border-graphite-3 lg:mt-12">
+        <video class="hero-loop block aspect-[8/5] w-full" autoplay muted loop playsinline preload="auto" poster="film/poster.jpg" aria-label="Як реклама перетворюється на заявку: пост, повідомлення, нова заявка">
+          <source src="film/hero-loop.webm" type="video/webm"><source src="film/hero-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- Калькулятор економіки реклами: цифри вводить клієнт, наших цін немає -->
+    <div id="calc" class="relative mx-auto w-full max-w-[480px]">
+      <div class="mb-4 flex items-center justify-end gap-2 pr-2" aria-hidden="true">
+        <span class="dot h-9 w-9 bg-lime lg:h-12 lg:w-12"></span><span class="dot h-5 w-5 bg-lime lg:h-7 lg:w-7"></span><span class="dot h-3 w-3 bg-lime lg:h-4 lg:w-4"></span>
+      </div>
+      <div class="rounded-[28px] border border-graphite-3 bg-graphite-2 p-5 lg:p-7">
+
+      <div data-step="calc">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <div class="text-[13px] font-semibold uppercase tracking-[.12em] text-gray">Калькулятор реклами</div>
+            <div class="mt-1 text-[21px] font-extrabold leading-[1.25]">Скільки принесе реклама вашому бізнесу?</div>
+          </div>
+          <span class="mt-1 whitespace-nowrap rounded-full border border-dashed border-gray/60 px-3 py-1 text-[13px] font-semibold text-gray">ваші цифри</span>
+        </div>
+
+        <div class="mt-6 space-y-5">
+        <div>
+          <div class="flex items-baseline justify-between gap-3 text-[15px]"><label for="c-budget" class="text-gray">Бюджет на рекламу / міс</label><output class="text-[17px] font-extrabold" data-out="budget"></output></div>
+          <input type="range" id="c-budget" class="range mt-2" min="2000" max="100000" step="1000" value="15000" data-k="budget">
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between gap-3 text-[15px]"><label for="c-cpl" class="text-gray">Ціна заявки</label><output class="text-[17px] font-extrabold" data-out="cpl"></output></div>
+          <input type="range" id="c-cpl" class="range mt-2" min="20" max="1500" step="10" value="150" data-k="cpl">
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between gap-3 text-[15px]"><label for="c-conv" class="text-gray">Із заявки в продаж</label><output class="text-[17px] font-extrabold" data-out="conv"></output></div>
+          <input type="range" id="c-conv" class="range mt-2" min="5" max="80" step="1" value="25" data-k="conv">
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between gap-3 text-[15px]"><label for="c-check" class="text-gray">Середній чек</label><output class="text-[17px] font-extrabold" data-out="check"></output></div>
+          <input type="range" id="c-check" class="range mt-2" min="200" max="50000" step="100" value="3000" data-k="check">
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between gap-3 text-[15px]"><label for="c-margin" class="text-gray">Маржа</label><output class="text-[17px] font-extrabold" data-out="margin"></output></div>
+          <input type="range" id="c-margin" class="range mt-2" min="5" max="90" step="1" value="40" data-k="margin">
+        </div>
+        </div>
+
+        <!-- Результат навмисно закритий: його надсилає менеджер після заявки (хук) -->
+        <div class="relative mt-6 overflow-hidden rounded-2xl border border-lime/40 bg-lime/[.05] p-4" aria-label="Результат розрахунку надішле менеджер">
+          <div class="space-y-3 text-[14px]" aria-hidden="true">
+            <div class="flex items-center justify-between"><span class="text-gray">Заявок на місяць</span><span class="h-4 w-14 rounded-full bg-white/25 blur-[3px]"></span></div>
+            <div class="flex items-center justify-between"><span class="text-gray">Нових клієнтів</span><span class="h-4 w-10 rounded-full bg-white/25 blur-[3px]"></span></div>
+            <div class="flex items-center justify-between"><span class="text-gray">Прибуток після реклами</span><span class="h-6 w-28 rounded-full bg-lime/60 blur-[4px]"></span></div>
+            <div class="flex items-center justify-between"><span class="text-gray">Яка ціна заявки окупається</span><span class="h-4 w-16 rounded-full bg-white/25 blur-[3px]"></span></div>
+          </div>
+          <div class="mt-4 flex items-center gap-3 border-t border-lime/20 pt-3 text-[14px] font-semibold"><span class="grid h-8 w-8 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4" data-i="lock"></svg></span>Розрахунок під ваші цифри надішле менеджер</div>
+        </div>
+
+        <button type="button" class="btn btn-primary mt-5 w-full" data-go="form">Розрахувати</button>
+        <p class="mt-3 text-center text-[13px] text-gray">Безкоштовно й ні до чого не зобов'язує.</p>
+      </div>
+
+      <form data-step="form" hidden onsubmit="return false">
+        <button type="button" class="inline-flex min-h-[44px] items-center gap-2 text-[15px] font-semibold text-gray hover:text-white" data-go="calc"><svg class="icon !h-5 !w-5 rotate-180" data-i="arrow"></svg>Змінити цифри</button>
+        <div class="mt-2 text-[21px] font-extrabold leading-[1.25]">Куди надіслати розрахунок?</div>
+        <p class="mt-2 text-[15px] leading-[1.5] text-gray">Менеджер перевірить ваші цифри під нішу й канал і зв'яжеться з вами протягом робочого дня.</p>
+        <div class="mt-4 flex flex-wrap gap-2 text-[13px] font-semibold" data-res="summary"></div>
+        <div class="mt-5 space-y-3">
+          <div><label for="q-name" class="mb-1.5 block text-[14px] font-bold">Ім'я <span class="text-gray">*</span></label><input id="q-name" class="field field-dark" autocomplete="name" required></div>
+          <div><label for="q-phone" class="mb-1.5 block text-[14px] font-bold">Телефон <span class="text-gray">*</span></label><input id="q-phone" class="field field-dark" type="tel" autocomplete="tel" required></div>
+          <div><label for="q-email" class="mb-1.5 block text-[14px] font-bold">Email</label><input id="q-email" class="field field-dark" type="email" autocomplete="email"></div>
+          <div><label for="q-ig" class="mb-1.5 block text-[14px] font-bold">Instagram або сайт</label><input id="q-ig" class="field field-dark" placeholder="@ваш_бізнес"></div>
+          <label class="flex cursor-pointer items-start gap-3 pt-1 text-[14px] leading-[1.45] text-gray"><input type="checkbox" class="mt-[2px] h-5 w-5 flex-none accent-[#C6F432]" required><span>Погоджуюсь з <a href="privacy.html" class="font-bold text-white underline underline-offset-2">політикою конфіденційності</a> *</span></label>
+        </div>
+        <button class="btn btn-primary mt-5 w-full">Отримати розрахунок</button>
+      </form>
+
+      <div data-step="done" hidden class="py-6 text-center">
+        <div class="mx-auto flex w-fit items-center gap-2" aria-hidden="true"><span class="dot grid h-16 w-16 place-items-center bg-lime text-graphite"><svg class="icon !h-8 !w-8 !stroke-[3]" data-i="check"></svg></span><span class="dot h-8 w-8 bg-lime/70"></span><span class="dot h-4 w-4 bg-lime/50"></span></div>
+        <div class="mt-6 text-[22px] font-extrabold">Дякуємо! Розрахунок уже в роботі</div>
+        <p class="mx-auto mt-2 max-w-[22rem] text-[15px] leading-[1.5] text-gray">Менеджер зв'яжеться з вами протягом робочого дня й пройдеться по цифрах разом із вами.</p>
+        <div class="mt-5 flex flex-wrap justify-center gap-2 text-[13px] font-semibold" data-res="summary-done"></div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. ЗНАЙОМО? -->
+<section class="section-y !pt-8 lg:!pt-12">
+  <div class="container-x">
+    <div class="grid items-center gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
+    <div>
+    <h2 class="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Знайомо?</h2>
+    <ul class="mt-7 grid gap-3 lg:mt-10">
+      <li class="flex gap-4 rounded-[20px] bg-graphite-2 p-5 lg:p-6">
+        <span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3 text-gray"><svg class="icon !h-[18px] !w-[18px]" data-i="x"></svg></span>
+        <p class="text-[16px] leading-[1.5] lg:text-[17px]">Реклама є, а заявок мало — і незрозуміло чому.</p>
+      </li>
+      <li class="flex gap-4 rounded-[20px] bg-graphite-2 p-5 lg:p-6">
+        <span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3 text-gray"><svg class="icon !h-[18px] !w-[18px]" data-i="x"></svg></span>
+        <p class="text-[16px] leading-[1.5] lg:text-[17px]">Гроші на рекламу йдуть, але не видно, яка саме приносить клієнтів.</p>
+      </li>
+      <li class="flex gap-4 rounded-[20px] bg-graphite-2 p-5 lg:p-6">
+        <span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3 text-gray"><svg class="icon !h-[18px] !w-[18px]" data-i="x"></svg></span>
+        <p class="text-[16px] leading-[1.5] lg:text-[17px]">Клієнти шукають у Google Картах, а знаходять конкурентів.</p>
+      </li>
+    </ul>
+    </div>
+    <img src="assets/illustrations/ill-pains.png" alt="Власник бізнесу сумно дивиться на графік, що падає" class="order-first w-full rounded-card lg:order-none" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- 3. ЩО МИ РОБИМО -->
+<section id="services" class="section-y !pt-0">
+  <div class="container-x">
+    <h2 class="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Що ми робимо</h2>
+    <div class="mt-7 grid gap-3 lg:mt-10 lg:grid-cols-6 lg:gap-5">
+      <article class="rounded-card bg-graphite-2 p-6 lg:col-span-2 lg:p-7">
+        <div class="relative mb-5 h-[168px] overflow-hidden rounded-2xl bg-graphite-3" aria-hidden="true">
+  <div class="absolute inset-x-4 top-4 flex h-10 items-center gap-2 rounded-full bg-graphite-2 px-4 text-[14px]"><svg class="icon !h-4 !w-4 text-gray" data-i="search"></svg><span>ремонт пральних машин</span><span class="ml-[-6px] h-4 w-[2px] bg-lime"></span></div>
+  <div class="absolute inset-x-4 top-[66px] rounded-xl bg-graphite-2 p-3 ring-1 ring-lime/50">
+    <div class="flex items-center gap-2 text-[12px]"><b>Реклама</b><span class="text-gray">· ваш-сайт.ua</span></div>
+    <div class="mt-1 text-[15px] font-bold text-lime">Ремонт за 1 день — виїзд майстра</div>
+    <div class="mt-1.5 h-2 w-4/5 rounded-full bg-graphite-3"></div>
+  </div>
+  <svg class="absolute bottom-3 right-6 h-6 w-6 drop-shadow" viewBox="0 0 24 24"><path d="M4 2l15 8.5-6.4 1.6L9.5 18z" fill="#fff" stroke="#1E1F22" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3 class="text-[20px] font-bold leading-[1.3] lg:text-[23px]">Google Ads</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Показуємо вас людям, які вже шукають вашу послугу в Google.</p>
+      </article>
+      <article class="rounded-card bg-graphite-2 p-6 lg:col-span-2 lg:p-7">
+        <div class="relative mb-5 h-[168px] overflow-hidden rounded-2xl bg-graphite-3" aria-hidden="true">
+  <div class="absolute left-4 top-4 w-[150px] overflow-hidden rounded-xl bg-graphite-2">
+    <div class="flex items-center gap-2 p-2 text-[11px]"><span class="dot grid h-5 w-5 place-items-center bg-[#E9E2D6] text-[10px] font-black text-[#3E5A4C]">U</span><div><b>urban.wear</b><div class="text-[10px] text-gray">Реклама</div></div></div>
+    <div class="relative h-[62px] overflow-hidden"><svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full"><rect width="200" height="160" fill="#E9E2D6"/><circle cx="160" cy="34" r="46" fill="#F2ECE2"/><path d="M64 46 L100 30 L136 46" stroke="#8B857A" stroke-width="3" fill="none"/><path d="M72 44 Q100 30 128 44 L156 70 L145 86 L134 78 L134 140 Q100 147 66 140 L66 78 L55 86 L44 70 Z" fill="#3E5A4C"/><path d="M84 42 Q100 64 116 42 Q100 34 84 42Z" fill="#2E463A"/><rect x="81" y="100" width="38" height="22" rx="6" fill="#36503F"/></svg></div>
+    <div class="m-2 rounded-md bg-white py-1 text-center text-[11px] font-bold text-graphite">Написати</div>
+  </div>
+  <div class="absolute right-4 top-6 max-w-[150px] rounded-2xl rounded-br-md bg-lime px-3 py-2 text-[13px] font-semibold leading-snug text-graphite">Добрий день! Скільки коштує?</div>
+  <div class="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-graphite-2 px-3 py-1.5 text-[12px]"><span class="dot h-2 w-2 bg-lime"></span>нова заявка</div></div>
+        <h3 class="text-[20px] font-bold leading-[1.3] lg:text-[23px]">Реклама в Instagram і Facebook</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Заявки через форму, сайт або Direct — з тестом кількох креативів.</p>
+      </article>
+      <article class="rounded-card bg-graphite-2 p-6 lg:col-span-2 lg:p-7">
+        <div class="relative mb-5 h-[168px] overflow-hidden rounded-2xl bg-graphite-3" aria-hidden="true">
+  <svg class="absolute inset-0 h-full w-full" viewBox="0 0 300 168" preserveAspectRatio="xMidYMid slice"><g stroke="#3A3C42" stroke-width="10" fill="none" stroke-linecap="round"><path d="M-10 40 L310 70"/><path d="M90 -10 L120 180"/><path d="M200 -10 L230 180"/><path d="M-10 130 L310 110"/></g><g stroke="#34363B" stroke-width="4" fill="none"><path d="M-10 95 L310 90"/><path d="M40 -10 L60 180"/></g></svg>
+  <div class="absolute left-[46%] top-[18px]"><span class="dot absolute -left-3 -top-3 h-[52px] w-[52px] bg-lime/20"></span><svg class="relative h-7 w-7 text-lime" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a8 8 0 0 0-8 8c0 5 5.5 10.2 7.4 11.8a1 1 0 0 0 1.2 0C14.5 20.2 20 15 20 10a8 8 0 0 0-8-8m0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></svg></div>
+  <div class="absolute inset-x-4 bottom-4 flex items-center justify-between gap-2 rounded-xl bg-graphite-2 p-3">
+    <div><div class="text-[14px] font-bold">Ваш бізнес</div><div class="mt-0.5 flex items-center gap-1 whitespace-nowrap text-[12px] text-gray"><span class="tracking-[1px] text-lime">★★★★★</span>4,9 · відкрито</div></div>
+    <span class="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1.5 text-[12px] font-bold text-graphite"><svg class="icon !h-3.5 !w-3.5" data-i="phone"></svg>Дзвінок</span>
+  </div></div>
+        <h3 class="text-[20px] font-bold leading-[1.3] lg:text-[23px]">Google Карти (профіль компанії)</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Щоб вас знаходили поруч, бачили відгуки й одразу телефонували.</p>
+      </article>
+      <article class="rounded-card bg-graphite-2 p-6 lg:col-span-2 lg:p-7">
+        <div class="relative mb-5 h-[168px] overflow-hidden rounded-2xl bg-graphite-3" aria-hidden="true">
+  <div class="absolute left-4 top-4 text-[12px] text-gray">Заявки за джерелами</div>
+  <div class="absolute left-4 top-11 w-[44%] space-y-2.5 text-[12px]">
+    <div><div class="flex justify-between"><span>Google</span><b>14</b></div><div class="mt-1 h-1.5 rounded-full bg-graphite-2"><div class="h-full w-[88%] rounded-full bg-lime"></div></div></div>
+    <div><div class="flex justify-between"><span>Instagram</span><b>11</b></div><div class="mt-1 h-1.5 rounded-full bg-graphite-2"><div class="h-full w-[70%] rounded-full bg-lime/70"></div></div></div>
+    <div><div class="flex justify-between"><span>Карти</span><b>6</b></div><div class="mt-1 h-1.5 rounded-full bg-graphite-2"><div class="h-full w-[40%] rounded-full bg-lime/45"></div></div></div>
+  </div>
+  <svg class="absolute bottom-4 right-4 h-[110px] w-[44%]" viewBox="0 0 200 110" preserveAspectRatio="none"><path d="M0 95 L35 80 L70 86 L105 55 L140 60 L175 28 L200 18 L200 110 L0 110Z" fill="rgb(198 244 50 / .12)"/><path d="M0 95 L35 80 L70 86 L105 55 L140 60 L175 28 L200 18" fill="none" stroke="#C6F432" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="175" cy="28" r="5" fill="#C6F432"/></svg>
+  <span class="absolute right-4 top-4 rounded-full border border-dashed border-gray/50 px-2 text-[11px] text-gray">приклад</span></div>
+        <h3 class="text-[20px] font-bold leading-[1.3] lg:text-[23px]">Аналітика</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">GA4 і Google Tag Manager: видно, звідки кожна заявка і скільки вона коштує.</p>
+      </article>
+      <article class="rounded-card bg-graphite-2 p-6 lg:col-span-2 lg:p-7">
+        <div class="relative mb-5 h-[168px] overflow-hidden rounded-2xl bg-graphite-3" aria-hidden="true">
+  <div class="absolute inset-x-4 top-4 bottom-0 overflow-hidden rounded-t-xl bg-graphite-2">
+    <div class="flex items-center gap-1.5 border-b border-graphite-3 px-3 py-2"><span class="dot h-2 w-2 bg-gray/50"></span><span class="dot h-2 w-2 bg-gray/50"></span><span class="dot h-2 w-2 bg-gray/50"></span><span class="ml-2 h-3 w-28 rounded-full bg-graphite-3"></span></div>
+    <div class="grid grid-cols-[1.2fr_1fr] gap-4 p-4">
+      <div><div class="h-3 w-full rounded-full bg-white/80"></div><div class="mt-2 h-3 w-3/4 rounded-full bg-white/80"></div><div class="mt-3 h-2 w-full rounded-full bg-graphite-3"></div><div class="mt-1.5 h-2 w-2/3 rounded-full bg-graphite-3"></div><div class="mt-4 h-6 w-24 rounded-full bg-lime"></div></div>
+      <div class="space-y-2 rounded-lg bg-graphite-3 p-2.5"><div class="h-4 rounded bg-graphite-2"></div><div class="h-4 rounded bg-graphite-2"></div><div class="h-4 rounded bg-lime/80"></div></div>
+    </div>
+  </div>
+  <div class="absolute right-3 top-[86px] flex items-center gap-2 rounded-xl bg-white px-3 py-2 text-[12px] font-bold text-graphite shadow-lg"><span class="dot h-2.5 w-2.5 bg-[#9CCB0E]"></span>Нова заявка · з сайту</div></div>
+        <h3 class="text-[20px] font-bold leading-[1.3] lg:text-[23px]">Сайти й лендинги будь-якої складності</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Швидкі сторінки під заявки: тексти, форма, аналітика й технічна SEO-основа одразу.</p>
+      </article>
+      <!-- [текст на погодженні] нова послуга: контент -->
+      <article class="rounded-card bg-graphite-2 p-6 lg:col-span-2 lg:p-7">
+        <div class="relative mb-5 h-[168px] overflow-hidden rounded-2xl bg-graphite-3" aria-hidden="true">
+          <div class="absolute left-4 top-3 bottom-3 w-[96px] overflow-hidden rounded-xl bg-[#3A3C42]">
+            <span class="dot absolute left-1/2 top-[38%] h-14 w-14 -translate-x-1/2 -translate-y-1/2 bg-lime/80"></span>
+            <span class="dot absolute left-[64%] top-[22%] h-6 w-6 bg-lime/50"></span>
+            <div class="absolute inset-x-2 bottom-2 h-1 rounded-full bg-white/25"><div class="h-full w-2/3 rounded-full bg-white"></div></div>
+            <span class="absolute left-2 top-2 rounded-md bg-graphite/70 px-1.5 text-[10px] font-bold">Reels</span>
+          </div>
+          <div class="absolute left-[128px] right-4 top-4 space-y-2">
+            <div class="flex items-center gap-2"><span class="rounded-full bg-lime px-2.5 py-1 text-[12px] font-extrabold text-graphite">AI</span><span class="text-[13px] font-semibold">креативи для реклами</span></div>
+            <div class="flex gap-1.5"><span class="h-12 flex-1 rounded-lg bg-graphite-2"></span><span class="h-12 flex-1 rounded-lg bg-graphite-2 ring-2 ring-lime"></span><span class="h-12 flex-1 rounded-lg bg-graphite-2"></span></div>
+            <div class="flex items-center gap-2 text-[12px] text-gray"><svg class="icon !h-4 !w-4 text-lime" data-i="check"></svg>фото · відео · тексти</div>
+          </div>
+        </div>
+        <h3 class="text-[20px] font-bold leading-[1.3] lg:text-[23px]">Контент і креативи</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Контент-мейкери та AI-контент: Reels, фото й відео для реклами та соцмереж.</p>
+      </article>
+    </div>
+    <p class="mt-6 flex max-w-[44rem] gap-3 text-[14px] leading-[1.5] text-gray lg:text-[15px]">
+      <span class="dot mt-[6px] h-2 w-2 bg-lime"></span>
+      Рекламний бюджет ви оплачуєте напряму Google або Meta. Ми не беремо відсоток від бюджету — тільки фіксовану оплату за роботу.
+    </p>
+
+    <!-- ОПЦІЙНИЙ БЛОК: ніші (текст не погоджено) -->
+    <div class="mt-10 rounded-[20px] border border-dashed border-graphite-3 p-5">
+      <div class="text-[13px] font-semibold uppercase tracking-[.12em] text-gray">опційний блок · [текст на погодженні]</div>
+      <div class="mt-3 flex flex-wrap gap-2 text-[14px] font-semibold">
+        <span class="rounded-full bg-graphite-2 px-4 py-2">Послуги</span><span class="rounded-full bg-graphite-2 px-4 py-2">Клініки</span><span class="rounded-full bg-graphite-2 px-4 py-2">Авто</span><span class="rounded-full bg-graphite-2 px-4 py-2">Меблі</span><span class="rounded-full bg-graphite-2 px-4 py-2">E-commerce</span><span class="rounded-full bg-graphite-2 px-4 py-2">B2B</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. ПАКЕТ «СИСТЕМА ЗАЯВОК» -->
+<section class="section-y !pt-0">
+  <div class="container-x">
+    <div class="relative overflow-hidden rounded-[28px] border-2 border-lime bg-graphite-2 p-6 lg:grid lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:p-14">
+      <div aria-hidden="true" class="pointer-events-none absolute -bottom-16 -right-16 hidden h-56 w-56 rounded-full bg-lime/[.06] lg:block"></div>
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-graphite-3 px-3 py-[6px] text-[13px] font-bold uppercase tracking-[.12em] text-lime">
+          <span class="dot h-2 w-2 bg-lime"></span>Пакет</span>
+        <h2 class="mt-4 text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">«Система заявок»</h2>
+        <p class="mt-4 text-[16px] leading-[1.55] text-gray lg:text-[18px]">Усе потрібне, щоб заявки приходили і було видно, що працює:</p>
+        <p class="mt-8 hidden text-[16px] leading-[1.55] lg:block">Вартість рахуємо на безкоштовному розборі — під вашу нішу, канал і обсяг роботи.</p>
+        <a href="#form" class="btn btn-primary mt-6 hidden lg:inline-flex">Обговорити пакет</a>
+      </div>
+      <ul class="mt-6 space-y-[14px] lg:mt-1">
+        <li class="flex gap-3 text-[16px] leading-[1.5] lg:text-[18px]"><span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4 !stroke-[3]" data-i="check"></svg></span>аудит поточної реклами й профілів;</li>
+        <li class="flex gap-3 text-[16px] leading-[1.5] lg:text-[18px]"><span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4 !stroke-[3]" data-i="check"></svg></span>аналітика (GA4 + GTM);</li>
+        <li class="flex gap-3 text-[16px] leading-[1.5] lg:text-[18px]"><span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4 !stroke-[3]" data-i="check"></svg></span>профіль у Google Картах;</li>
+        <li class="flex gap-3 text-[16px] leading-[1.5] lg:text-[18px]"><span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4 !stroke-[3]" data-i="check"></svg></span>один рекламний канал на вибір — Google або Instagram/Facebook;</li>
+        <li class="flex gap-3 text-[16px] leading-[1.5] lg:text-[18px]"><span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4 !stroke-[3]" data-i="check"></svg></span>заявки в таблицю чи месенджер із джерелом;</li>
+        <li class="flex gap-3 text-[16px] leading-[1.5] lg:text-[18px]"><span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-lime text-graphite"><svg class="icon !h-4 !w-4 !stroke-[3]" data-i="check"></svg></span>щомісячний звіт простими словами.</li>
+      </ul>
+      <p class="mt-7 text-[16px] leading-[1.55] lg:hidden">Вартість рахуємо на безкоштовному розборі — під вашу нішу, канал і обсяг роботи.</p>
+      <a href="#form" class="btn btn-primary mt-5 w-full lg:hidden">Обговорити пакет</a>
+    </div>
+  </div>
+</section>
+
+<!-- 5. ЯК МИ ПРАЦЮЄМО: шлях із крапок, що зростають -->
+<section id="process" class="section-y !pt-0">
+  <div class="container-x">
+    <h2 class="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Як ми працюємо</h2>
+
+    <!-- desktop: горизонтальний ряд -->
+    <ol class="mt-14 hidden grid-cols-4 gap-8 lg:grid">
+      <li class="relative">
+        <div class="flex h-16 items-center"><span class="dot grid h-10 w-10 place-items-center bg-lime text-[17px] font-black text-graphite">1</span></div>
+        <div aria-hidden="true" class="absolute left-[56px] right-[-16px] top-0 flex h-16 items-center justify-between"><span data-trail></span></div>
+        <h3 class="mt-6 text-[22px] font-bold">Безкоштовний розбір</h3>
+        <span class="mt-2 inline-block rounded-full bg-lime/[.12] px-3 py-1 text-[14px] font-bold text-lime">безкоштовно · 15–20 хв</span>
+        <p class="mt-3 text-[16px] leading-[1.55] text-gray">Дивимось ваш профіль, сайт або Instagram і рекламу. 15–20 хвилин.</p>
+      </li>
+      <li class="relative">
+        <div class="flex h-16 items-center"><span class="dot grid h-12 w-12 place-items-center bg-lime text-[19px] font-black text-graphite">2</span></div>
+        <div aria-hidden="true" class="absolute left-[64px] right-[-16px] top-0 flex h-16 items-center justify-between"><span data-trail></span></div>
+        <h3 class="mt-6 text-[22px] font-bold">Рахуємо економіку</h3>
+        <p class="mt-3 text-[16px] leading-[1.55] text-gray">Визначаємо, скільки можна платити за заявку, щоб реклама була вигідною.</p>
+      </li>
+      <li class="relative">
+        <div class="flex h-16 items-center"><span class="dot grid h-14 w-14 place-items-center bg-lime text-[21px] font-black text-graphite">3</span></div>
+        <div aria-hidden="true" class="absolute left-[72px] right-[-16px] top-0 flex h-16 items-center justify-between"><span data-trail></span></div>
+        <h3 class="mt-6 text-[22px] font-bold">Запускаємо</h3>
+        <p class="mt-3 text-[16px] leading-[1.55] text-gray">Спершу аналітика, потім реклама, далі заявки — у таблицю чи месенджер.</p>
+      </li>
+      <li class="relative">
+        <div class="flex h-16 items-center"><span class="dot grid h-16 w-16 place-items-center bg-lime text-[24px] font-black text-graphite">4</span></div>
+        <h3 class="mt-6 text-[22px] font-bold">Звітуємо щомісяця</h3>
+        <p class="mt-3 text-[16px] leading-[1.55] text-gray">Витрати → заявки → ціна заявки → що робимо далі.</p>
+      </li>
+    </ol>
+
+    <!-- mobile: вертикальна лінія з крапками-номерами -->
+    <ol class="mt-8 lg:hidden">
+      <li class="relative flex gap-4 pb-8">
+        <div class="flex w-14 flex-none flex-col items-center"><span class="dot grid h-9 w-9 place-items-center bg-lime text-[16px] font-black text-graphite">1</span><span class="mt-2 flex flex-1 flex-col items-center gap-[7px]" data-vtrail></span></div>
+        <div><h3 class="text-[20px] font-bold leading-[1.3]">Безкоштовний розбір</h3>
+          <span class="mt-2 inline-block rounded-full bg-lime/[.12] px-3 py-1 text-[14px] font-bold text-lime">безкоштовно · 15–20 хв</span>
+          <p class="mt-2 text-[16px] leading-[1.55] text-gray">Дивимось ваш профіль, сайт або Instagram і рекламу. 15–20 хвилин.</p></div>
+      </li>
+      <li class="relative flex gap-4 pb-8">
+        <div class="flex w-14 flex-none flex-col items-center"><span class="dot grid h-10 w-10 place-items-center bg-lime text-[17px] font-black text-graphite">2</span><span class="mt-2 flex flex-1 flex-col items-center gap-[7px]" data-vtrail></span></div>
+        <div><h3 class="text-[20px] font-bold leading-[1.3]">Рахуємо економіку</h3>
+          <p class="mt-2 text-[16px] leading-[1.55] text-gray">Визначаємо, скільки можна платити за заявку, щоб реклама була вигідною.</p></div>
+      </li>
+      <li class="relative flex gap-4 pb-8">
+        <div class="flex w-14 flex-none flex-col items-center"><span class="dot grid h-12 w-12 place-items-center bg-lime text-[19px] font-black text-graphite">3</span><span class="mt-2 flex flex-1 flex-col items-center gap-[7px]" data-vtrail></span></div>
+        <div><h3 class="text-[20px] font-bold leading-[1.3]">Запускаємо</h3>
+          <p class="mt-2 text-[16px] leading-[1.55] text-gray">Спершу аналітика, потім реклама, далі заявки — у таблицю чи месенджер.</p></div>
+      </li>
+      <li class="relative flex gap-4">
+        <div class="flex w-14 flex-none flex-col items-center"><span class="dot grid h-14 w-14 place-items-center bg-lime text-[21px] font-black text-graphite">4</span></div>
+        <div><h3 class="text-[20px] font-bold leading-[1.3]">Звітуємо щомісяця</h3>
+          <p class="mt-2 text-[16px] leading-[1.55] text-gray">Витрати → заявки → ціна заявки → що робимо далі.</p></div>
+      </li>
+    </ol>
+
+    <div class="mt-12 grid items-center gap-5 lg:mt-16 lg:grid-cols-2">
+      <img src="assets/illustrations/ill-call.png" alt="Онлайн-розбір: власник бізнесу на відеодзвінку з маркетологом" class="w-full rounded-card" loading="lazy">
+    <!-- Візуал: мокап «звіту» (ілюстрація, не фото). Цифри умовні. -->
+    <div class="relative w-full" aria-label="Приклад щомісячного звіту з умовними цифрами" role="img">
+      <div class="relative rounded-[28px] border border-graphite-3 bg-graphite-2 p-5 lg:p-7">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[13px] font-semibold uppercase tracking-[.12em] text-gray">Звіт · місяць</div>
+            <div class="mt-1 text-[20px] font-bold">Ваш бізнес</div>
+          </div>
+          <span class="rounded-full border border-dashed border-gray/60 px-3 py-1 text-[13px] font-semibold text-gray">приклад звіту</span>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-2 rounded-full bg-graphite-3 px-3 py-[6px] text-[14px] font-semibold">
+            <span class="grid h-5 w-5 place-items-center rounded-full bg-white text-[12px] font-black text-[#4285F4]">G</span>Google Ads</span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-graphite-3 px-3 py-[6px] text-[14px] font-semibold">
+            <svg class="icon !h-[18px] !w-[18px]" data-i="instagram"></svg>Instagram</span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-graphite-3 px-3 py-[6px] text-[14px] font-semibold">
+            <svg class="icon !h-[18px] !w-[18px] text-[#EA4335]" data-i="pin"></svg>Карти</span>
+        </div>
+
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl bg-graphite-3 p-4">
+            <div class="text-[14px] text-gray">Витрати</div>
+            <div class="mt-1 text-[24px] font-extrabold">9 600 ₴</div>
+          </div>
+          <div class="rounded-2xl bg-graphite-3 p-4">
+            <div class="text-[14px] text-gray">Заявки</div>
+            <div class="mt-1 text-[24px] font-extrabold">48</div>
+          </div>
+          <div class="col-span-2 flex items-end justify-between rounded-2xl border border-lime/40 bg-[rgba(198,244,50,.07)] p-4">
+            <div>
+              <div class="text-[14px] text-gray">Ціна заявки</div>
+              <div class="mt-1 text-[40px] font-black leading-none text-lime lg:text-[48px]">200 ₴</div>
+            </div>
+            <span class="mb-1 text-[13px] font-semibold text-gray">умовні цифри</span>
+          </div>
+        </div>
+
+        <!-- Воронка: крапок менше, але вони яскравіші -->
+        <div class="mt-5 space-y-3 border-t border-graphite-3 pt-5 text-[14px]">
+          <div class="flex items-center gap-3"><span class="w-[68px] text-gray">Покази</span><span class="flex flex-1 gap-[5px]" data-dots="18,7,#4A4C52"></span></div>
+          <div class="flex items-center gap-3"><span class="w-[68px] text-gray">Кліки</span><span class="flex flex-1 gap-[6px]" data-dots="11,9,#6E7178"></span></div>
+          <div class="flex items-center gap-3"><span class="w-[68px] text-white">Заявки</span><span class="flex flex-1 gap-[7px]" data-dots="6,12,#FFFFFF"></span></div>
+          <div class="flex items-center gap-3"><span class="w-[68px] font-bold text-lime">Клієнти</span><span class="flex flex-1 gap-2" data-dots="3,16,#C6F432"></span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. ЧОМУ З НАМИ СПОКІЙНО -->
+<section class="section-y !pt-0">
+  <div class="container-x">
+    <h2 class="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Чому з нами спокійно</h2>
+    <div class="mt-7 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-5">
+      <img src="assets/illustrations/ill-mechanic.png" alt="Майстер СТО спокійно отримує нову заявку на телефон" class="h-full w-full rounded-card object-cover sm:col-span-2 lg:col-span-1 lg:row-span-2" loading="lazy">
+      <div class="rounded-card bg-graphite-2 p-6 lg:p-8">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-graphite-3 text-lime"><svg class="icon" data-i="key"></svg></span>
+        <h3 class="mt-5 text-[20px] font-bold lg:text-[23px]">Акаунти — ваші.</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Рекламні кабінети й аналітика оформлені на вас, ми працюємо через доступ, який ви можете забрати будь-коли.</p>
+      </div>
+      <div class="rounded-card bg-graphite-2 p-6 lg:p-8">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-graphite-3 text-lime"><svg class="icon" data-i="trend"></svg></span>
+        <h3 class="mt-5 text-[20px] font-bold lg:text-[23px]">Цифри з першого дня.</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Не «охоплення», а заявки і їхня ціна.</p>
+      </div>
+      <div class="rounded-card bg-graphite-2 p-6 lg:p-8">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-graphite-3 text-lime"><svg class="icon" data-i="wallet"></svg></span>
+        <h3 class="mt-5 text-[20px] font-bold lg:text-[23px]">Фіксована оплата.</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Без відсотка від рекламного бюджету.</p>
+      </div>
+      <div class="rounded-card bg-graphite-2 p-6 lg:p-8">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-graphite-3 text-lime"><svg class="icon" data-i="globe"></svg></span>
+        <h3 class="mt-5 text-[20px] font-bold lg:text-[23px]">Працюємо онлайн по всій Україні.</h3>
+        <p class="mt-2 text-[16px] leading-[1.55] text-gray">Зв'язок у месенджері, дзвінки й відеозустрічі.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. FAQ -->
+<section id="faq" class="section-y !pt-0">
+  <div class="container-x lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16">
+    <h2 class="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Питання</h2>
+    <div class="mt-7 divide-y divide-graphite-3 border-y border-graphite-3 lg:mt-0" data-faq>
+      <details open class="group py-1"><summary class="flex min-h-[64px] cursor-pointer items-center justify-between gap-4 py-3 text-[17px] font-bold lg:text-[20px]">Скільки коштують ваші послуги?<span class="faq-plus grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3"><svg class="icon !h-5 !w-5" data-i="plus"></svg></span></summary>
+        <p class="max-w-prose pb-5 pr-12 text-[16px] leading-[1.55] text-gray lg:text-[17px]">Залежить від ніші, каналу й обсягу роботи. На безкоштовному розборі подивимось вашу ситуацію і назвемо точну ціну — фіксовану, без відсотка від рекламного бюджету.</p></details>
+      <details class="group py-1"><summary class="flex min-h-[64px] cursor-pointer items-center justify-between gap-4 py-3 text-[17px] font-bold lg:text-[20px]">Скільки треба вкласти в рекламу?<span class="faq-plus grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3"><svg class="icon !h-5 !w-5" data-i="plus"></svg></span></summary>
+        <p class="max-w-prose pb-5 pr-12 text-[16px] leading-[1.55] text-gray lg:text-[17px]">Залежить від ніші й середнього чеку. На розборі порахуємо бюджет під вашу ситуацію; для старту зазвичай закладаємо тестовий період 1–2 тижні.</p></details>
+      <details class="group py-1"><summary class="flex min-h-[64px] cursor-pointer items-center justify-between gap-4 py-3 text-[17px] font-bold lg:text-[20px]">Коли будуть перші заявки?<span class="faq-plus grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3"><svg class="icon !h-5 !w-5" data-i="plus"></svg></span></summary>
+        <p class="max-w-prose pb-5 pr-12 text-[16px] leading-[1.55] text-gray lg:text-[17px]">Зазвичай у перші дні після запуску. Перші 2–4 тижні — тест: дивимось, які оголошення й аудиторії дають найдешевші заявки, і переносимо бюджет на них.</p></details>
+      <details class="group py-1"><summary class="flex min-h-[64px] cursor-pointer items-center justify-between gap-4 py-3 text-[17px] font-bold lg:text-[20px]">Навіщо давати вам доступи?<span class="faq-plus grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3"><svg class="icon !h-5 !w-5" data-i="plus"></svg></span></summary>
+        <p class="max-w-prose pb-5 pr-12 text-[16px] leading-[1.55] text-gray lg:text-[17px]">Щоб налаштувати рекламу й аналітику без передачі паролів. Ви додаєте нас як користувача і можете забрати доступ одним кліком.</p></details>
+      <details class="group py-1"><summary class="flex min-h-[64px] cursor-pointer items-center justify-between gap-4 py-3 text-[17px] font-bold lg:text-[20px]">Чи потрібен сайт?<span class="faq-plus grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3"><svg class="icon !h-5 !w-5" data-i="plus"></svg></span></summary>
+        <p class="max-w-prose pb-5 pr-12 text-[16px] leading-[1.55] text-gray lg:text-[17px]">Не обов'язково. Рекламу можна вести на форму заявки в Instagram/Facebook або в Direct. Якщо сайт допоможе — скажемо чесно і запропонуємо варіант.</p></details>
+      <details class="group py-1"><summary class="flex min-h-[64px] cursor-pointer items-center justify-between gap-4 py-3 text-[17px] font-bold lg:text-[20px]">А якщо реклама не спрацює?<span class="faq-plus grid h-9 w-9 flex-none place-items-center rounded-full bg-graphite-3"><svg class="icon !h-5 !w-5" data-i="plus"></svg></span></summary>
+        <p class="max-w-prose pb-5 pr-12 text-[16px] leading-[1.55] text-gray lg:text-[17px]">На розборі скажемо, якщо реклама для вашого бізнесу зараз невигідна. Під час тесту бачимо цифри щотижня й коригуємо, а не чекаємо кінця місяця.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 8. ФОРМА: світлий «острів» -->
+<section id="form" class="section-y !pt-0">
+  <div class="container-x">
+    <div class="grid gap-8 rounded-[28px] bg-off-white p-5 text-graphite sm:p-8 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:p-14">
+      <div>
+        <div class="flex items-center gap-[6px]" aria-hidden="true"><span class="dot h-[14px] w-[14px] bg-lime-on-light"></span><span class="dot h-[9px] w-[9px] bg-lime-on-light"></span><span class="dot h-[6px] w-[6px] bg-lime-on-light"></span></div>
+        <h2 class="mt-5 text-[27px] font-extrabold leading-[1.2] lg:text-[42px] lg:leading-[1.15]">Безкоштовний розбір вашої реклами</h2>
+        <p class="mt-4 text-[16px] leading-[1.55] text-gray-on-light lg:text-[18px]">Залиште контакти — подивимось ваш профіль і рекламу та підкажемо, що покращити. Ні до чого не зобов'язує.</p>
+        <img src="assets/illustrations/ill-clinic.png" alt="Адміністраторка клініки приймає дзвінки й записи" class="mt-6 w-full rounded-card lg:mt-8" loading="lazy">
+        <ul class="mt-8 hidden space-y-3 text-[16px] font-semibold lg:block">
+          <li><a href="https://instagram.com/vismo.agency" class="inline-flex items-center gap-3"><span class="grid h-11 w-11 place-items-center rounded-full bg-white shadow-[var(--shadow-light)]"><svg class="icon !h-5 !w-5" data-i="instagram"></svg></span>@vismo.agency</a></li>
+          <li><a href="tel:+380990615190" class="inline-flex items-center gap-3"><span class="grid h-11 w-11 place-items-center rounded-full bg-white shadow-[var(--shadow-light)]"><svg class="icon !h-5 !w-5" data-i="phone"></svg></span>+380 99 061 5190</a></li>
+          <li><a href="mailto:vismo.agency@gmail.com" class="inline-flex items-center gap-3"><span class="grid h-11 w-11 place-items-center rounded-full bg-white shadow-[var(--shadow-light)]"><svg class="icon !h-5 !w-5" data-i="mail"></svg></span>vismo.agency@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <form class="rounded-[24px] bg-white p-5 shadow-[var(--shadow-light)] sm:p-7" onsubmit="return false">
+        <div class="space-y-4">
+          <div><label for="f-name" class="mb-2 block text-[15px] font-bold">Ім'я <span class="text-gray-on-light">*</span></label>
+            <input id="f-name" class="field" autocomplete="name" required></div>
+          <div><label for="f-contact" class="mb-2 block text-[15px] font-bold">Телефон або Telegram <span class="text-gray-on-light">*</span></label>
+            <input id="f-contact" class="field" autocomplete="tel" required></div>
+          <div><label for="f-biz" class="mb-2 block text-[15px] font-bold">Ваш бізнес</label>
+            <input id="f-biz" class="field" placeholder="посилання на Instagram або сайт"></div>
+          <div><label for="f-comment" class="mb-2 block text-[15px] font-bold">Коментар</label>
+            <textarea id="f-comment" rows="3" class="field resize-none"></textarea></div>
+          <label class="flex cursor-pointer items-start gap-3 text-[15px] leading-[1.45]">
+            <input type="checkbox" class="mt-[2px] h-5 w-5 flex-none accent-[#1E1F22]" required>
+            <span>Погоджуюсь з <a href="privacy.html" class="font-bold underline underline-offset-2">політикою конфіденційності</a> <span class="text-gray-on-light">*</span></span>
+          </label>
+        </div>
+        <div class="mt-5 flex h-[65px] w-full max-w-[300px] items-center justify-center rounded-[10px] border border-dashed border-[#D2D2CE] text-[13px] text-gray-on-light">Cloudflare Turnstile</div>
+        <button class="btn btn-primary mt-5 w-full">Отримати розбір</button>
+      </form>
+
+      <!-- mobile: альтернативні контакти під формою -->
+      <ul class="flex flex-wrap gap-2 text-[15px] font-semibold lg:hidden">
+        <li><a href="https://instagram.com/vismo.agency" class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-white px-4"><svg class="icon !h-[18px] !w-[18px]" data-i="instagram"></svg>Instagram</a></li>
+        <li><a href="tel:+380990615190" class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-white px-4"><svg class="icon !h-[18px] !w-[18px]" data-i="phone"></svg>Зателефонувати</a></li>
+        <li><a href="mailto:vismo.agency@gmail.com" class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-white px-4"><svg class="icon !h-[18px] !w-[18px]" data-i="mail"></svg>Email</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 9. ФУТЕР -->
+<footer class="border-t border-graphite-3">
+  <div class="container-x flex flex-col gap-8 py-12 lg:flex-row lg:items-end lg:justify-between lg:py-16">
+    <div>
+      <img src="assets/vismo-logo-white.svg" alt="Vismo Agency" class="h-12 w-auto">
+      <p class="mt-4 text-[14px] text-gray">Vismo Agency · Україна</p>
+    </div>
+    <div class="space-y-3 text-[15px] lg:text-right">
+      <p class="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
+        <a href="tel:+380990615190" class="hover:text-lime">+380 99 061 5190</a>
+        <a href="mailto:vismo.agency@gmail.com" class="hover:text-lime">vismo.agency@gmail.com</a>
+        <a href="https://instagram.com/vismo.agency" class="hover:text-lime">Instagram @vismo.agency</a>
+        <a href="#" class="hover:text-lime">Facebook</a>
+      </p>
+      <p class="text-[14px] text-gray"><a href="privacy.html" class="underline underline-offset-2 hover:text-white">Політика конфіденційності</a> · © 2026</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Лінійні іконки (Lucide, stroke 1.85)
+  const I = {
+    instagram: '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>',
+    pin: '<path d="M20 10c0 5-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+    search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+    message: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+    chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+    browser: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/>',
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+    plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+    key: '<path d="M2.59 17.41A2 2 0 0 0 2 18.83V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.17a2 2 0 0 0 1.42-.59l.81-.81a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>',
+    trend: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',
+    wallet: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+    phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+    mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  };
+  document.querySelectorAll('svg[data-i]').forEach(s => { s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); s.innerHTML = I[s.dataset.i]; });
+  // Воронка: count,size,color
+  document.querySelectorAll('[data-dots]').forEach(el => {
+    const [n, size, color] = el.dataset.dots.split(',');
+    el.innerHTML = Array.from({ length: +n }, () => `<span class="dot" style="width:${size}px;height:${size}px;background:${color}"></span>`).join('');
+  });
+  // Слід між кроками: крапки ростуть до наступного кроку
+  document.querySelectorAll('[data-trail]').forEach(el => {
+    el.parentElement.innerHTML = [4, 5, 6, 7, 8].map(s => `<span class="dot self-center bg-lime/50" style="width:${s}px;height:${s}px"></span>`).join('');
+  });
+  document.querySelectorAll('[data-vtrail]').forEach(el => {
+    el.innerHTML = [4, 5, 6, 5, 4].map(s => `<span class="dot bg-lime/40" style="width:${s}px;height:${s}px"></span>`).join('');
+  });
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.hero-loop').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+
+  // Калькулятор-хук: клієнт вводить цифри, результат бачить менеджер (піде разом із заявкою)
+  const calc = document.getElementById('calc');
+  const n = v => Math.round(v).toLocaleString('uk-UA');
+  const fmt = { budget: v => n(v) + ' ₴', cpl: v => n(v) + ' ₴', check: v => n(v) + ' ₴', conv: v => v + '%', margin: v => v + '%' };
+  function update() {
+    const v = {};
+    calc.querySelectorAll('.range').forEach(r => {
+      v[r.dataset.k] = +r.value;
+      r.style.setProperty('--p', ((r.value - r.min) / (r.max - r.min) * 100) + '%');
+      calc.querySelector(`[data-out="${r.dataset.k}"]`).textContent = fmt[r.dataset.k](+r.value);
+    });
+    const chips = [`бюджет ${fmt.budget(v.budget)}`, `заявка ${fmt.cpl(v.cpl)}`, `чек ${fmt.check(v.check)}`]
+      .map(t => `<span class="rounded-full bg-graphite-3 px-3 py-1">${t}</span>`).join('');
+    calc.querySelectorAll('[data-res^="summary"]').forEach(el => el.innerHTML = chips);
+  }
+  calc.addEventListener('input', update);
+  update();
+  const go = step => calc.querySelectorAll('[data-step]').forEach(s => s.hidden = s.dataset.step !== step);
+  calc.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+  // прототип: замість відправки на API одразу показуємо стан «дякуємо»
+  calc.querySelector('[data-step="form"]').addEventListener('submit', e => e.target.checkValidity() && go('done'));
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="motion.js"></script>
+</body>
+</html>
