@@ -14,6 +14,7 @@ export function useLeadForm(form: 'lead' | 'calc', toFields: (d: FormData) => Le
   const started = useRef(false);
   const [errors, setErrors] = useState<LeadErrors>({});
   const [status, setStatus] = useState<Status>('idle');
+  const [channel, setChannel] = useState('telegram');
 
   const onStart = () => {
     if (started.current) return;
@@ -34,12 +35,13 @@ export function useLeadForm(form: 'lead' | 'calc', toFields: (d: FormData) => Le
       return;
     }
     setStatus('sending');
+    setChannel(fields.channel);
     const err = await sendLead({ ...fields, form, website: String(data.get('hp_extra') || ''), turnstile: turnstile.current?.token() || '' });
     if (err) turnstile.current?.reset();
     setStatus(err || 'done');
   }
 
-  return { turnstile, errors, status, onStart, onSubmit };
+  return { turnstile, errors, status, channel, onStart, onSubmit };
 }
 
 // Приховане поле-пастка для ботів. Назва без сенсу, щоб автозаповнення браузера його не чіпало
@@ -48,6 +50,22 @@ export function Honeypot() {
     <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
       <input name="hp_extra" tabIndex={-1} autoComplete="new-password" />
     </div>
+  );
+}
+
+// Що буде далі після заявки: обраний канал, строк і запасний контакт. Повторної форми не показуємо — лише дублі.
+export function NextSteps({ channel, dark }: { channel: string; dark?: boolean }) {
+  const how = channel === 'call'
+    ? <>Зателефонуємо з номера <span className="whitespace-nowrap">{CONTACTS.phoneLabel}</span></>
+    : `Напишемо вам у ${channel === 'viber' ? 'Viber' : 'Telegram'}`;
+  return (
+    <>
+      <p className={`mx-auto mt-2 max-w-[24rem] text-[16px] leading-[1.55] ${dark ? 'text-gray' : 'text-gray-on-light'}`}>{how} протягом робочого дня.</p>
+      <p className={`mx-auto mt-4 max-w-[24rem] text-[14px] leading-[1.5] ${dark ? 'text-gray' : 'text-gray-on-light'}`}>
+        Помилилися в номері? Напишіть нам в{' '}
+        <a href={CONTACTS.instagram} target="_blank" rel="noopener noreferrer" data-contact="instagram" className={`font-bold underline ${dark ? 'text-white' : ''}`}>Instagram</a>.
+      </p>
+    </>
   );
 }
 

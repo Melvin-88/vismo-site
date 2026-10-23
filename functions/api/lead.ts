@@ -1,5 +1,5 @@
 // Cloudflare Pages Function: POST /api/lead → Turnstile → валідація → Telegram. Заявки ніде не зберігаються.
-import { LIMITS, validateLead } from '../../lib/validate.ts';
+import { CHANNELS, LIMITS, normalizePhone, validateLead, type Channel } from '../../lib/validate.ts';
 
 interface Env { TELEGRAM_BOT_TOKEN: string; TELEGRAM_CHAT_ID: string; TURNSTILE_SECRET_KEY: string }
 
@@ -14,11 +14,14 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 // токен має бути виданий саме на тому домені, куди прийшов запит (не з копії сайту з тим самим ключем)
 async function turnstileOk(token: string, secret: string, ip: string | null, host: string) {
-  const body = new URLSearchParams({ secret, response: token });
+  const body = new URLSearchParams({ secret: secret.trim(), response: token });
   if (ip) body.set('remoteip', ip);
   const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
-  const d = (await r.json()) as { success?: boolean; hostname?: string };
-  return d.success === true && d.hostname === host;
+  const d = (await r.json()) as { success?: boolean; hostname?: string; 'error-codes'?: string[] };
+  const ok = d.success === true && d.hostname === host;
+  // без секретів у лозі: лише коди помилок і хости, щоб бачити причину відмови в Real-time logs
+  if (!ok) console.error('lead: turnstile', JSON.stringify(d['error-codes'] || []), d.hostname, host);
+  return ok;
 }
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
@@ -46,6 +49,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const f = {
       name: str(b.name, LIMITS.name),
       contact: str(b.contact, LIMITS.contact),
+      channel: str(b.channel, 20),
       business: str(b.business, LIMITS.business),
       comment: str(b.comment, LIMITS.comment),
       consent: b.consent === true,
@@ -61,7 +65,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const text = [
       `🟢 <b>Нова заявка — vismo.com.ua</b>${b.form === 'calc' ? ' (калькулятор)' : ''}`,
       `Ім'я: ${esc(f.name)}`,
-      `Контакт: ${esc(f.contact)}`,
+      `Телефон: ${normalizePhone(f.contact)}`,
+      `Звʼязок: ${CHANNELS[f.channel as Channel]}${f.channel === 'telegram' ? ` · <a href="https://t.me/${normalizePhone(f.contact)}">написати</a>` : ''}`,
       f.business && `Бізнес: ${esc(f.business)}`,
       f.comment && `Коментар: ${esc(f.comment)}`,
       `Джерело: ${esc(source)}${clickIds ? ' · ' + clickIds : ''}`,

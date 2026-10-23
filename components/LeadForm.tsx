@@ -1,17 +1,19 @@
 'use client';
 import { Turnstile } from './Turnstile';
-import { aria, FieldError, Honeypot, SubmitError, useLeadForm } from './useLeadForm';
+import { PhoneField } from './PhoneField';
+import { aria, FieldError, Honeypot, NextSteps, SubmitError, useLeadForm } from './useLeadForm';
 
 const fields = (d: FormData) => ({
   name: String(d.get('name') || ''),
   contact: String(d.get('contact') || ''),
+  channel: String(d.get('channel') || ''),
   business: String(d.get('business') || ''),
   comment: String(d.get('comment') || ''),
   consent: d.get('consent') === 'on',
 });
 
 export function LeadForm() {
-  const { turnstile, errors, status, onStart, onSubmit } = useLeadForm('lead', fields);
+  const { turnstile, errors, status, channel, onStart, onSubmit } = useLeadForm('lead', fields);
 
   if (status === 'done') {
     return (
@@ -20,7 +22,7 @@ export function LeadForm() {
           <span className="dot h-14 w-14 bg-lime" /><span className="dot h-7 w-7 bg-lime/70" /><span className="dot h-4 w-4 bg-lime/50" />
         </div>
         <h3 className="mt-6 text-[24px] font-extrabold">Дякуємо! Заявку отримали</h3>
-        <p className="mx-auto mt-2 max-w-[24rem] text-[16px] leading-[1.55] text-gray-on-light">Звʼяжемося з вами протягом робочого дня.</p>
+        <NextSteps channel={channel} />
       </div>
     );
   }
@@ -34,11 +36,7 @@ export function LeadForm() {
           <input id="f-name" name="name" className="field" autoComplete="name" required maxLength={60} {...aria('f-name', errors.name)} />
           <FieldError id="f-name-err" msg={errors.name} />
         </div>
-        <div>
-          <label htmlFor="f-contact" className="mb-2 block text-[15px] font-bold">Телефон або Telegram <span className="text-gray-on-light">*</span></label>
-          <input id="f-contact" name="contact" className="field" autoComplete="tel" inputMode="tel" placeholder="+380… або @username" required maxLength={40} {...aria('f-contact', errors.contact)} />
-          <FieldError id="f-contact-err" msg={errors.contact} />
-        </div>
+        <PhoneField id="f-contact" error={errors.contact} channelError={errors.channel} />
         <div>
           <label htmlFor="f-biz" className="mb-2 block text-[15px] font-bold">Ваш бізнес</label>
           <input id="f-biz" name="business" className="field" placeholder="посилання на Instagram або сайт" maxLength={200} {...aria('f-biz', errors.business)} />
@@ -59,7 +57,7 @@ export function LeadForm() {
       </div>
       <Turnstile ref={turnstile} />
       <button className="btn btn-primary mt-5 w-full" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Надсилаємо…' : 'Отримати розбір'}
+        {status === 'sending' ? 'Надсилаємо…' : 'Отримати безкоштовний розбір'}
       </button>
       <SubmitError status={status} />
     </form>

@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import { Icon } from './ui/Icon';
 import { Turnstile } from './Turnstile';
-import { aria, FieldError, Honeypot, SubmitError, useLeadForm } from './useLeadForm';
+import { PhoneField } from './PhoneField';
+import { aria, FieldError, Honeypot, NextSteps, SubmitError, useLeadForm } from './useLeadForm';
 
-// Калькулятор-хук: клієнт вводить цифри, розрахунок отримує менеджер разом із заявкою
+// Калькулятор-хук: клієнт вводить цифри, розрахунок приходить нам разом із заявкою
 const SLIDERS = [
   { k: 'budget', label: 'Бюджет на рекламу / міс', min: 2000, max: 100000, step: 1000, value: 15000 },
   { k: 'cpl', label: 'Ціна заявки', min: 20, max: 1500, step: 10, value: 150 },
@@ -30,11 +31,12 @@ function summary(v: Values) {
 export function Calculator() {
   const [v, setV] = useState<Values>(() => Object.fromEntries(SLIDERS.map(s => [s.k, s.value])) as Values);
   const [step, setStep] = useState<'calc' | 'form'>('calc');
-  const { turnstile, errors, status, onStart, onSubmit } = useLeadForm('calc', d => ({
+  const { turnstile, errors, status, channel, onStart, onSubmit } = useLeadForm('calc', d => ({
     name: String(d.get('name') || ''),
-    contact: String(d.get('phone') || ''),
+    contact: String(d.get('contact') || ''),
+    channel: String(d.get('channel') || ''),
     business: String(d.get('ig') || ''),
-    comment: [d.get('email') && `Email: ${d.get('email')}`, summary(v)].filter(Boolean).join('\n'),
+    comment: summary(v),
     consent: d.get('consent') === 'on',
   }));
 
@@ -59,7 +61,7 @@ export function Calculator() {
               <span className="dot h-8 w-8 bg-lime/70" /><span className="dot h-4 w-4 bg-lime/50" />
             </div>
             <p className="mt-6 text-[22px] font-extrabold">Дякуємо! Розрахунок уже в роботі</p>
-            <p className="mx-auto mt-2 max-w-[22rem] text-[15px] leading-[1.5] text-gray">Менеджер звʼяжеться з вами протягом робочого дня й пройдеться по цифрах разом із вами.</p>
+            <NextSteps dark channel={channel} />
             <div className="flex justify-center">{chips}</div>
           </div>
         ) : step === 'calc' ? (
@@ -109,7 +111,7 @@ export function Calculator() {
               <Icon name="arrow" className="!h-5 !w-5 rotate-180" />Змінити цифри
             </button>
             <p className="mt-2 text-[21px] font-extrabold leading-[1.25]">Куди надіслати розрахунок?</p>
-            <p className="mt-2 text-[15px] leading-[1.5] text-gray">Менеджер перевірить ваші цифри під нішу й канал і звʼяжеться з вами протягом робочого дня.</p>
+            <p className="mt-2 text-[15px] leading-[1.5] text-gray">Перевіримо ваші цифри під нішу й канал і звʼяжемося з вами протягом робочого дня.</p>
             {chips}
             <div className="mt-5 space-y-3">
               <div>
@@ -117,15 +119,7 @@ export function Calculator() {
                 <input id="q-name" name="name" className="field field-dark" autoComplete="name" required maxLength={60} {...aria('q-name', errors.name)} />
                 <FieldError dark id="q-name-err" msg={errors.name} />
               </div>
-              <div>
-                <label htmlFor="q-phone" className="mb-1.5 block text-[14px] font-bold">Телефон <span className="text-gray">*</span></label>
-                <input id="q-phone" name="phone" className="field field-dark" type="tel" autoComplete="tel" required maxLength={40} {...aria('q-phone', errors.contact)} />
-                <FieldError dark id="q-phone-err" msg={errors.contact} />
-              </div>
-              <div>
-                <label htmlFor="q-email" className="mb-1.5 block text-[14px] font-bold">Email</label>
-                <input id="q-email" name="email" className="field field-dark" type="email" autoComplete="email" maxLength={100} />
-              </div>
+              <PhoneField dark id="q-phone" error={errors.contact} channelError={errors.channel} />
               <div>
                 <label htmlFor="q-ig" className="mb-1.5 block text-[14px] font-bold">Instagram або сайт</label>
                 <input id="q-ig" name="ig" className="field field-dark" placeholder="@ваш_бізнес" maxLength={200} {...aria('q-ig', errors.business)} />
