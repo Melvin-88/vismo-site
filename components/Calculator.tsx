@@ -55,7 +55,7 @@ export function Calculator() {
       </div>
       <div className="rounded-[28px] border border-graphite-3 bg-graphite-2 p-5 lg:p-7">
         {status === 'done' ? (
-          <div role="status" className="py-6 text-center">
+          <div role="status" ref={el => el?.scrollIntoView({ block: 'center' })} className="py-6 text-center">
             <div className="mx-auto flex w-fit items-center gap-2" aria-hidden="true">
               <span className="dot grid h-16 w-16 place-items-center bg-lime text-graphite"><Icon name="check" className="!h-8 !w-8 !stroke-[3]" /></span>
               <span className="dot h-8 w-8 bg-lime/70" /><span className="dot h-4 w-4 bg-lime/50" />
@@ -88,7 +88,7 @@ export function Calculator() {
                 </div>
               ))}
             </div>
-            {/* Результат навмисно закритий: його надсилає менеджер після заявки */}
+            {/* Результат навмисно закритий: надсилаємо його після заявки */}
             <div data-result className="relative mt-6 overflow-hidden rounded-2xl border border-lime/40 bg-lime/[.05] p-4">
               <div className="space-y-3 text-[14px]" aria-hidden="true">
                 <div className="flex items-center justify-between"><span className="text-gray">Заявок на місяць</span><span className="h-4 w-14 rounded-full bg-white/25 blur-[3px]" /></div>
@@ -98,7 +98,7 @@ export function Calculator() {
               </div>
               <p className="mt-4 flex items-center gap-3 border-t border-lime/20 pt-3 text-[14px] font-semibold">
                 <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-lime text-graphite"><Icon name="lock" className="!h-4 !w-4" /></span>
-                Розрахунок під ваші цифри надішле менеджер
+                Розрахунок під ваші цифри надішлемо після заявки
               </p>
             </div>
             <button type="button" className="btn btn-primary mt-5 w-full" data-cta="hero" onClick={() => setStep('form')}>Розрахувати</button>

@@ -13,7 +13,7 @@ export const CONTACTS = {
   email: 'vismo.agency@gmail.com',
   instagram: 'https://www.instagram.com/vismo.agency/',
   instagramHandle: '@vismo.agency',
-  facebook: '', // TODO(Роман): посилання на сторінку Facebook; порожнє — посилання не показується
+  facebook: 'https://www.facebook.com/profile.php?id=61595277942472',
 };
 
 // Опційні блоки з дизайн-брифу: вимкнені, поки Роман не погодить тексти (site-spec §6)

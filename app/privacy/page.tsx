@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   openGraph: { type: 'website', locale: 'uk_UA', siteName: 'Vismo Agency', url: '/privacy', title: 'Політика конфіденційності — Vismo', images: ['/og-image.png'] },
 };
 
-// TODO(Роман, задача №15.6): замінити текст на docs/privacy.md і заповнити поля в [дужках] ДО публікації
 export default function Privacy() {
   return (
     <>
@@ -19,7 +18,7 @@ export default function Privacy() {
       <main className="container-x section-y">
         <article className="max-w-prose text-[16px] leading-[1.65] text-gray [&_a]:text-white [&_a]:underline [&_h2]:mb-3 [&_h2]:mt-10 [&_h2]:text-[22px] [&_h2]:font-bold [&_h2]:text-white [&_li]:mt-1 [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6">
           <h1 className="text-[32px] font-extrabold leading-[1.2] text-white lg:text-[44px]">Політика конфіденційності</h1>
-          <p>Редакція від [дата]. Власник сайту vismo.com.ua — [ПІБ / ФОП] (далі — «Vismo Agency», «ми»).</p>
+          <p>Редакція від 23 жовтня 2026 року. Власник сайту vismo.com.ua — ФОП Федченко Роман Євгенович (далі — «Vismo Agency», «ми»).</p>
 
           <h2>1. Які дані ми збираємо</h2>
           <ul>
@@ -33,7 +32,7 @@ export default function Privacy() {
 
           <h2>3. Кому передаються дані</h2>
           <ul>
-            <li>Telegram — заявка надходить у робочий чат менеджера;</li>
+            <li>Telegram — заявка надходить у наш робочий Telegram-чат;</li>
             <li>Cloudflare — хостинг сайту, обробка форми й Cloudflare Turnstile (захист від ботів);</li>
             <li>Google Tag Manager і Google Analytics 4 — знеособлена статистика відвідувань;</li>
             <li>Meta Pixel — вимірювання ефективності реклами в Instagram і Facebook (якщо підключено).</li>
@@ -41,7 +40,7 @@ export default function Privacy() {
           <p>Ми не продаємо й не передаємо ваші дані третім особам для їхнього маркетингу.</p>
 
           <h2>4. Зберігання</h2>
-          <p>Заявки не зберігаються в базі даних сайту — лише в чаті Telegram. Ми зберігаємо їх [строк зберігання] і видаляємо на ваш запит. Джерело переходу зберігається у вашому браузері (localStorage) і не передається нікуди, крім разом із заявкою.</p>
+          <p>Заявки не зберігаються в базі даних сайту — лише в чаті Telegram. Ми зберігаємо їх 12 місяців з моменту останнього контакту з вами, після чого видаляємо; раніше — на ваш запит. Джерело переходу зберігається у вашому браузері (localStorage) і не передається нікуди, крім разом із заявкою.</p>
 
           <h2>5. Cookies</h2>
           <p>Сервіси аналітики використовують cookies. Ви можете вимкнути або видалити їх у налаштуваннях браузера — сайт працюватиме й без них.</p>

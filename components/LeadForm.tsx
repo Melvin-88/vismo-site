@@ -17,7 +17,7 @@ export function LeadForm() {
 
   if (status === 'done') {
     return (
-      <div role="status" className="rounded-[24px] bg-white p-8 text-center shadow-[var(--shadow-light)] sm:p-10">
+      <div role="status" ref={el => el?.scrollIntoView({ block: 'center' })} className="flex h-full flex-col justify-center rounded-[24px] bg-white p-8 text-center shadow-[var(--shadow-light)] sm:p-10">
         <div className="mx-auto flex w-fit items-center gap-2" aria-hidden="true">
           <span className="dot h-14 w-14 bg-lime" /><span className="dot h-7 w-7 bg-lime/70" /><span className="dot h-4 w-4 bg-lime/50" />
         </div>

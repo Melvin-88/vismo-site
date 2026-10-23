@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/site';
 export const dynamic = 'force-static';
 
 // Оновлювати вручну, коли реально змінюється зміст сторінки (не дата збірки — інакше Google перестає вірити lastmod)
-const UPDATED = { home: '2026-10-22', privacy: '2026-10-22' };
+const UPDATED = { home: '2026-10-22', privacy: '2026-10-23' };
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
