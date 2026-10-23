@@ -29,7 +29,7 @@ export function PhoneField({ id, error, channelError, dark }: { id: string; erro
           className={`field${dark ? ' field-dark' : ''}`} onInput={onInput} onFocus={onFocus} onBlur={onBlur} {...aria(id, error)} />
         <FieldError dark={dark} id={`${id}-err`} msg={error} />
       </div>
-      <fieldset>
+      <fieldset aria-describedby={channelError ? `${id}-ch-err` : undefined}>
         <legend className={label}>Як зручніше звʼязатися?</legend>
         <div className="flex flex-wrap gap-2">
           {Object.entries(CHANNELS).map(([k, t]) => (
