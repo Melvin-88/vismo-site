@@ -14,6 +14,10 @@ declare global {
   interface Window { dataLayer?: object[] }
 }
 
+// Усі параметри подій. GTM пам'ятає значення між push, тож кожна подія явно затирає чужі параметри,
+// інакше, напр., cta_click піде в GA4 з form_id від попереднього form_start.
+const PARAMS = ['form_id', 'lead_source', 'cta_location', 'contact_type', 'error_type'] as const;
+
 export function track(e: AnalyticsEvent) {
-  (window.dataLayer ||= []).push(e);
+  (window.dataLayer ||= []).push({ ...Object.fromEntries(PARAMS.map(k => [k, undefined])), ...e });
 }
