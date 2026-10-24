@@ -20,7 +20,7 @@ export async function sendLead(p: LeadPayload): Promise<ErrorType | null> {
   }
   const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: ErrorType };
   if (res.ok && data.ok) {
-    track({ event: 'generate_lead', form_id: p.form, lead_source: attribution.utm_source || 'direct' });
+    track({ event: 'generate_lead', form_id: p.form });
     return null;
   }
   const error_type = data.error === 'turnstile' || data.error === 'validation' ? data.error : 'server';
