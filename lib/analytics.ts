@@ -3,7 +3,8 @@ type FormId = 'lead' | 'calc';
 export type ErrorType = 'validation' | 'turnstile' | 'network' | 'server';
 
 type AnalyticsEvent =
-  | { event: 'cta_click'; cta_location: 'header' | 'hero' | 'services' | 'package' | 'sticky' | 'footer' }
+  | { event: 'cta_click'; cta_location: 'header' | 'hero' | 'calculator' | 'services' | 'package' | 'sticky' | 'footer' }
+  | { event: 'calc_interact' }
   | { event: 'contact_click'; contact_type: 'phone' | 'instagram' | 'email' | 'telegram' }
   | { event: 'form_start'; form_id: FormId }
   | { event: 'generate_lead'; form_id: FormId; lead_source: string }

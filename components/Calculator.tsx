@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { track } from '@/lib/analytics';
 import { Icon } from './ui/Icon';
 import { Turnstile } from './Turnstile';
 import { PhoneField } from './PhoneField';
@@ -31,6 +32,7 @@ function summary(v: Values) {
 export function Calculator() {
   const [v, setV] = useState<Values>(() => Object.fromEntries(SLIDERS.map(s => [s.k, s.value])) as Values);
   const [step, setStep] = useState<'calc' | 'form'>('calc');
+  const moved = useRef(false); // calc_interact — лише перший рух повзунка за візит сторінки
   const { turnstile, errors, status, channel, onStart, onSubmit } = useLeadForm('calc', d => ({
     name: String(d.get('name') || ''),
     contact: String(d.get('contact') || ''),
@@ -83,7 +85,11 @@ export function Calculator() {
                   <input
                     type="range" id={`c-${s.k}`} data-k={s.k} className="range mt-2" min={s.min} max={s.max} step={s.step} value={v[s.k]}
                     style={{ '--p': `${((v[s.k] - s.min) / (s.max - s.min)) * 100}%` } as React.CSSProperties}
-                    onChange={e => { const val = +e.target.value; setV(p => ({ ...p, [s.k]: val })); }}
+                    onChange={e => {
+                      const val = +e.target.value; setV(p => ({ ...p, [s.k]: val }));
+                      // isTrusted: інтро в Motion.tsx теж рухає повзунки, але це не дія людини
+                      if (!moved.current && e.nativeEvent.isTrusted) { moved.current = true; track({ event: 'calc_interact' }); }
+                    }}
                   />
                 </div>
               ))}
@@ -101,7 +107,7 @@ export function Calculator() {
                 Розрахунок під ваші цифри надішлемо після заявки
               </p>
             </div>
-            <button type="button" className="btn btn-primary mt-5 w-full" data-cta="hero" onClick={() => setStep('form')}>Розрахувати</button>
+            <button type="button" className="btn btn-primary mt-5 w-full" data-cta="calculator" onClick={() => setStep('form')}>Розрахувати</button>
             <p className="mt-3 text-center text-[13px] text-gray">Безкоштовно й ні до чого не зобовʼязує.</p>
           </div>
         ) : (
