@@ -42,7 +42,7 @@ const jsonLd = {
       name: 'Vismo Agency',
       alternateName: 'Vismo',
       url: `${SITE_URL}/`,
-      logo: `${SITE_URL}/icon-512.png`,
+      logo: `${SITE_URL}/logo-512.png`,
       image: `${SITE_URL}/og-image.png`,
       description: SEO.description,
       email: CONTACTS.email,

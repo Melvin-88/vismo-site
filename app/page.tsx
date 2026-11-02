@@ -11,6 +11,10 @@ import { Services } from '@/components/Services';
 import { StickyCta } from '@/components/StickyCta';
 import { Trust } from '@/components/Trust';
 import { FAQ } from '@/lib/site';
+import type { Metadata } from 'next';
+
+// Лише на головній: у layout це успадкував би not-found і конфліктувало б із його noindex
+export const metadata: Metadata = { robots: { index: true, follow: true, 'max-image-preview': 'large' } };
 
 // FAQPage: ті самі тексти, що й видимий блок FAQ
 const faqLd = {
