@@ -17,7 +17,7 @@ export function Footer() {
             {CONTACTS.facebook && <a href={CONTACTS.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center hover:text-lime">Facebook</a>}
           </p>
           <p className="text-[14px] text-gray">
-            <a href="/privacy" className="underline underline-offset-2 hover:text-white">Політика конфіденційності</a> · © 2026
+            <a href="/privacy" className="underline underline-offset-2 hover:text-white">Політика конфіденційності</a> · © 2026 ФОП Федченко Роман Євгенович
           </p>
           <a href="/#form" data-cta="footer" className="btn btn-primary !min-h-[44px] !text-[15px]">Отримати безкоштовний розбір</a>
         </div>

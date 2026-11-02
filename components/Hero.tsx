@@ -16,7 +16,7 @@ export function Hero() {
             Заявки для вашого бізнесу з&nbsp;<span className="text-lime">Google</span> та&nbsp;<span className="text-lime">Instagram</span>
           </h1>
           <p className="mt-5 max-w-[34rem] text-[16px] leading-[1.55] text-gray lg:mt-7 lg:text-[19px] lg:leading-[1.6]">
-            Налаштуємо рекламу, аналітику й Google Карти так, щоб ви бачили, звідки приходить кожен клієнт і скільки він коштує.
+            Vismo Agency — маркетингова агенція. Налаштовуємо Google Ads, таргетовану рекламу в Instagram і Facebook, аналітику й Google Карти так, щоб ви бачили, звідки приходить кожен клієнт і скільки він коштує.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-10">
             <a href="#form" data-cta="hero" className="btn btn-primary w-full sm:w-auto">Отримати безкоштовний розбір</a>

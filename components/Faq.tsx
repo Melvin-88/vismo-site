@@ -5,7 +5,7 @@ export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-y !pt-0">
       <div className="container-x lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16">
-        <h2 id="faq-title" className="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Питання</h2>
+        <h2 id="faq-title" className="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Питання про рекламу й роботу з нами</h2>
         <div className="mt-7 divide-y divide-graphite-3 border-y border-graphite-3 lg:mt-0">
           {FAQ.map(([q, a], i) => (
             <details key={q} open={i === 0} className="group py-1">

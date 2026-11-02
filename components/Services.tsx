@@ -81,7 +81,7 @@ const ContentMock = () => (
 );
 
 const SERVICES: { title: string; text: string; mock: ReactNode; on?: boolean }[] = [
-  { title: 'Google Ads', text: 'Контекстна реклама в пошуку: показуємо вас людям, які вже шукають вашу послугу в Google.', mock: <GoogleMock /> },
+  { title: 'Налаштування Google Ads', text: 'Контекстна реклама в пошуку: показуємо вас людям, які вже шукають вашу послугу в Google.', mock: <GoogleMock /> },
   { title: 'Таргетована реклама в Instagram і Facebook', text: 'Заявки через форму, сайт або Direct — з тестом кількох креативів.', mock: <InstaMock /> },
   { title: 'Google Карти (профіль компанії)', text: 'Щоб вас знаходили поруч, бачили відгуки й одразу телефонували.', mock: <MapsMock /> },
   { title: 'Аналітика', text: 'GA4 і Google Tag Manager: видно, звідки кожна заявка і скільки вона коштує.', mock: <AnalyticsMock /> },
@@ -93,7 +93,7 @@ export function Services() {
   return (
     <section id="services" aria-labelledby="services-title" className="section-y !pt-0">
       <div className="container-x">
-        <h2 id="services-title" className="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Що ми робимо</h2>
+        <h2 id="services-title" className="text-[27px] font-extrabold leading-[1.2] lg:text-[42px]">Що ми робимо: реклама, аналітика, сайти</h2>
         <div className="mt-7 grid gap-3 lg:mt-10 lg:grid-cols-6 lg:gap-5">
           {SERVICES.filter(s => s.on !== false).map((s, i, all) => (
             // 5 карток: дві останні розтягуємо на пів ряду, щоб сітка не мала дірки
