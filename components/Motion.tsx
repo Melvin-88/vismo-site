@@ -10,6 +10,18 @@ const $$ = (s: string, r: ParentNode = document) => [...r.querySelectorAll<El>(s
 const SPRING = 'back.out(1.4)'; // ледь помітний overshoot, без «пружинок»
 
 export function Motion() {
+  // Відео стартує після load: не конкурує з першим показом; при reduced motion лишається постер
+  useEffect(() => {
+    const video = $('video.hero-loop') as HTMLVideoElement | null;
+    if (!video || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const start = () => { video.play().catch(() => {}); };
+    if (document.readyState === 'complete') start();
+    else {
+      addEventListener('load', start, { once: true });
+      return () => removeEventListener('load', start);
+    }
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     if (new URLSearchParams(location.search).has('static')) return root.classList.remove('anim');

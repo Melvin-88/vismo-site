@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Privacy() {
   return (
     <>
-      <Header />
+      <Header base="/" />
       <main className="container-x section-y">
         <article className="max-w-prose text-[16px] leading-[1.65] text-gray [&_a]:text-white [&_a]:underline [&_h2]:mb-3 [&_h2]:mt-10 [&_h2]:text-[22px] [&_h2]:font-bold [&_h2]:text-white [&_li]:mt-1 [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6">
           <h1 className="text-[32px] font-extrabold leading-[1.2] text-white lg:text-[44px]">Політика конфіденційності</h1>
@@ -54,7 +54,7 @@ export default function Privacy() {
           <p className="mt-10"><a href="/">← На головну</a></p>
         </article>
       </main>
-      <Footer />
+      <Footer base="/" />
     </>
   );
 }

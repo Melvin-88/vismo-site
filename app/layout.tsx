@@ -69,7 +69,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {GTM_ID && (
           <>
             <Script id="gtm" strategy="afterInteractive">
-              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
+              {/* GTM і піксель важкі для мобільного LCP: стартують після першої дії або через 4 с після load. Події до старту чекають у dataLayer */}
+              {`(function(w,d,i){var E=['pointerdown','keydown','touchstart','scroll'],t,on;function go(){if(on)return;on=1;clearTimeout(t);E.forEach(function(e){w.removeEventListener(e,go)});w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;d.head.appendChild(j)}E.forEach(function(e){w.addEventListener(e,go,{passive:true})});function arm(){t=setTimeout(go,4000)}d.readyState==='complete'?arm():w.addEventListener('load',arm)})(window,document,'${GTM_ID}');`}
             </Script>
             <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} /></noscript>
           </>

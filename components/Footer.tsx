@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { CONTACTS } from '@/lib/site';
 
-export function Footer() {
+export function Footer({ base = '' }: { base?: string }) {
   return (
     <footer className="border-t border-graphite-3">
       <div className="container-x flex flex-col gap-8 py-12 pb-28 lg:flex-row lg:items-end lg:justify-between lg:py-16">
@@ -19,7 +19,7 @@ export function Footer() {
           <p className="text-[14px] text-gray">
             <a href="/privacy" className="underline underline-offset-2 hover:text-white">Політика конфіденційності</a> · © 2026 ФОП Федченко Роман Євгенович
           </p>
-          <a href="/#form" data-cta="footer" className="btn btn-primary !min-h-[44px] !text-[15px]">Отримати безкоштовний розбір</a>
+          <a href={`${base}#form`} data-cta="footer" className="btn btn-primary !min-h-[44px] !text-[15px]">Отримати безкоштовний розбір</a>
         </div>
       </div>
     </footer>

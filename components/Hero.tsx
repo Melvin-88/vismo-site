@@ -26,8 +26,8 @@ export function Hero() {
           </div>
           <p className="mt-4 text-[14px] text-gray">Відповідаємо протягом робочого дня.</p>
           <div className="mt-8 overflow-hidden rounded-card border border-graphite-3 lg:mt-12">
-            {/* Hero-цикл 8 с: реклама → повідомлення → заявка → лічильник */}
-            <video className="hero-loop block aspect-[8/5] w-full" width={1120} height={700} autoPlay muted loop playsInline preload="metadata" poster="/film/poster.webp"
+            {/* Hero-цикл 8 с: реклама → повідомлення → заявка → лічильник. Запускає Motion після load, до того LCP — постер */}
+            <video className="hero-loop block aspect-[8/5] w-full" width={1120} height={700} muted loop playsInline preload="none" poster="/film/poster.webp"
               aria-label="Як реклама перетворюється на заявку: пост, повідомлення, нова заявка">
               <source src="/film/hero-loop.webm" type="video/webm" />
               <source src="/film/hero-loop.mp4" type="video/mp4" />
