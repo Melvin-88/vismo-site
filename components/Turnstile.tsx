@@ -2,7 +2,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 type TurnstileApi = {
-  render: (el: HTMLElement, o: { sitekey: string; language?: string; callback: (t: string) => void; 'expired-callback': () => void }) => string;
+  render: (el: HTMLElement, o: { sitekey: string; language?: string; size?: 'normal' | 'compact'; callback: (t: string) => void; 'expired-callback': () => void }) => string;
   reset: (id: string) => void;
 };
 declare global { interface Window { turnstile?: TurnstileApi; onTurnstileLoad?: () => void } }
@@ -43,7 +43,8 @@ export const Turnstile = forwardRef<TurnstileHandle>(function Turnstile(_, ref) 
       whenReady(() => {
         if (!box.current || id.current) return;
         id.current = window.turnstile!.render(box.current, {
-          sitekey: SITE_KEY, language: 'uk',
+          // звичайний віджет має фіксовані 300 px; на вузьких телефонах форма вужча — беремо компактний
+          sitekey: SITE_KEY, language: 'uk', size: box.current.offsetWidth < 300 ? 'compact' : 'normal',
           callback: t => { token.current = t; },
           'expired-callback': () => { token.current = ''; },
         });

@@ -14,7 +14,7 @@ export function FormSection() {
   return (
     <section id="form" aria-labelledby="form-title" className="section-y !pt-0">
       <div className="container-x">
-        <div className="grid gap-8 rounded-[28px] bg-off-white p-5 text-graphite sm:p-8 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:p-14">
+        <div className="grid grid-cols-1 gap-8 rounded-[28px] bg-off-white p-5 text-graphite sm:p-8 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:p-14">
           <div>
             <div className="flex items-center gap-[6px]" aria-hidden="true"><span className="dot h-[14px] w-[14px] bg-lime-on-light" /><span className="dot h-[9px] w-[9px] bg-lime-on-light" /><span className="dot h-[6px] w-[6px] bg-lime-on-light" /></div>
             <h2 id="form-title" className="mt-5 text-[27px] font-extrabold leading-[1.2] lg:text-[42px] lg:leading-[1.15]">Безкоштовний розбір вашої реклами</h2>
