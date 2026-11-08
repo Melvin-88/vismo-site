@@ -60,13 +60,14 @@ img, svg, video { -webkit-user-drag: none; }
 .btn:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
 #form a:focus-visible, #form button:focus-visible { outline-color: var(--graphite); }
 
-.field { width: 100%; min-height: 52px; padding: 14px 16px; border-radius: var(--radius-field); background: var(--off-white); border: 1.5px solid #E2E2DE; color: var(--graphite); font-size: 16px; }
+.field { width: 100%; min-height: 52px; padding: 14px 16px; border-radius: var(--radius-field); background: var(--off-white); border: 2px solid #E2E2DE; color: var(--graphite); font-size: 16px; }
 .field::placeholder { color: #8A8D93; }
-.field:focus { outline: none; border: 2px solid var(--graphite); }
+/* товщина рамки однакова в усіх станах — при фокусі змінюється лише колір, поле не «стрибає» */
+.field:focus { outline: none; border-color: var(--graphite); }
 .field[aria-invalid="true"] { border-color: #C62828; }
 .field-dark { background: var(--graphite-3); border-color: transparent; color: var(--white); min-height: 48px; }
 .field-dark::placeholder { color: #8A8D93; }
-.field-dark:focus { border: 2px solid var(--lime); }
+.field-dark:focus { border-color: var(--lime); }
 .field-dark[aria-invalid="true"] { border-color: var(--error); }
 
 .range { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; }
